@@ -5,18 +5,10 @@ from auth import model
 from utils import util, constant
 import uuid, datetime
 
-import smtplib
-import random
-import string
 
 from fastapi.security import OAuth2PasswordRequestForm
 
 router = APIRouter()
-
-
-
-
-
 
 @router.post("/auth/register", response_model=model.UserList)
 async def register(user: model.UserCreate):
@@ -28,21 +20,15 @@ async def register(user: model.UserCreate):
     gid = str(uuid.uuid1())
     gdate = str(datetime.datetime.now())
 
-    #Randoming Password
-
-    p1=random.choice(string.ascii_letters)
-    p2=random.choice(string.ascii_letters)
-    p3=random.choice(string.ascii_letters)
-    p4=random.randint(111, 999)
-    random_password=p1+p2+p3+str(p4)
-
-    #End of Randoming Password
 
     query = users.insert().values(
         id = gid,
         username = user.username,
-        password = util.get_password_hash(random_password),
-        fullname = user.fullname,
+        password = user.password,
+
+        first_name= user.first_name, 
+        last_name=user.last_name,
+
         email = user.email,
         type = user.type,
         role = user.role,
@@ -54,43 +40,6 @@ async def register(user: model.UserCreate):
         status = "1"
     )
 
-        #Send Confirmation Email to this user
-
-    #Auth
-    sender="appsendertestv1@gmail.com"
-    Email_password=str("Ishimwe@12")
-
-    #Information
-    me="Barnabs Software"
-    subject="Account Confirmation!"
-    receiver=user.email
-
-    #Text Message
-    content=" here is your confirmation link, Click button below to Confirm your Account here "
-
-    #Message
-    message="""From:"""+me+""""<appsendertestv1@gmail.com>
-    To: To """+receiver+""" <"""+user.email+"""> MIME-Version: 1.0
-    Content-type: text/html
-    Subject: """+subject+"""
-
-    """"Hallo "+user.fullname+" your password is "+random_password+content+" https://www.google.com/search?client=opera&q=goog&sourceid=opera&ie=UTF-8&oe=UTF-8"+"""
-    """
-    server=smtplib.SMTP("smtp.gmail.com", 587)
-
-    #Start server & Login
-    server.starttls()
-    server.login(sender,Email_password)
-    print("Login Success")
-
-    #Send Email
-    server.sendmail(sender, receiver, message)
-    print("Email Sent")
-    print(random_password)
-
-    #End Confirmation Email
-
-
     await database.execute(query)
     return {
         **user.dict(),
@@ -99,7 +48,6 @@ async def register(user: model.UserCreate):
         "last_update_at": gdate,
         "status": "1"
     }
-
 
 
 
@@ -131,3 +79,4 @@ async def login(form_data: OAuth2PasswordRequestForm = Depends()):
     }
 
     return results
+

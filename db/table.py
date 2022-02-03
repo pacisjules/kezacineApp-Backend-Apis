@@ -12,6 +12,7 @@ users = sqlalchemy.Table(
     sqlalchemy.Column("id"        , sqlalchemy.String , primary_key=True),
     sqlalchemy.Column("username"  , sqlalchemy.String, unique=True),
     sqlalchemy.Column("password"  , sqlalchemy.String),
+    
     sqlalchemy.Column("first_name"  , sqlalchemy.String),
     sqlalchemy.Column("last_name"  , sqlalchemy.String),
 
@@ -43,9 +44,7 @@ customer  = sqlalchemy.Table(
 )
 
 
-
 # 3 Table Movies
-
 movie  = sqlalchemy.Table(
     "movie",
     metadata,
@@ -61,6 +60,11 @@ movie  = sqlalchemy.Table(
     sqlalchemy.Column("poster_path"  , sqlalchemy.String),
     sqlalchemy.Column("type"    , sqlalchemy.String),
 
+    sqlalchemy.Column("genres"    , sqlalchemy.String),
+    sqlalchemy.Column("languages"    , sqlalchemy.String),
+    sqlalchemy.Column("actors"    , sqlalchemy.String),
+    sqlalchemy.Column("directors"    , sqlalchemy.String),
+
     sqlalchemy.Column("status"    , sqlalchemy.String),
     sqlalchemy.Column("created_at", sqlalchemy.String),
     sqlalchemy.Column("updated_at", sqlalchemy.String),
@@ -72,7 +76,6 @@ movie_language  = sqlalchemy.Table(
     metadata,
     sqlalchemy.Column("id"        , sqlalchemy.String , primary_key=True),
     sqlalchemy.Column("user_id", sqlalchemy.String, ForeignKey(users.c.id), nullable=False),
-    sqlalchemy.Column("movie_id", sqlalchemy.String, ForeignKey(movie.c.id), nullable=False),
 
     sqlalchemy.Column("movie_language"  , sqlalchemy.String),
     sqlalchemy.Column("language_description"  , sqlalchemy.String),
@@ -89,7 +92,6 @@ movie_genre  = sqlalchemy.Table(
     metadata,
     sqlalchemy.Column("id"        , sqlalchemy.String , primary_key=True),
     sqlalchemy.Column("user_id", sqlalchemy.String, ForeignKey(users.c.id), nullable=False),
-    sqlalchemy.Column("movie_id", sqlalchemy.String, ForeignKey(movie.c.id), nullable=False),
 
     sqlalchemy.Column("movie_genre"  , sqlalchemy.String),
     sqlalchemy.Column("movie_admitted_age"  , sqlalchemy.String),
@@ -100,14 +102,12 @@ movie_genre  = sqlalchemy.Table(
     sqlalchemy.Column("updated_at", sqlalchemy.String),
 )
 
-
 # 6 Table Movie Countries
 movie_country  = sqlalchemy.Table(
     "movie_country",
     metadata,
     sqlalchemy.Column("id"        , sqlalchemy.String , primary_key=True),
     sqlalchemy.Column("user_id", sqlalchemy.String, ForeignKey(users.c.id), nullable=False),
-    sqlalchemy.Column("movie_id", sqlalchemy.String, ForeignKey(movie.c.id), nullable=False),
 
     sqlalchemy.Column("movie_country"  , sqlalchemy.String),
     sqlalchemy.Column("movie_country_continent"  , sqlalchemy.String),
@@ -126,7 +126,6 @@ movie_actor  = sqlalchemy.Table(
     metadata,
     sqlalchemy.Column("id"        , sqlalchemy.String , primary_key=True),
     sqlalchemy.Column("user_id", sqlalchemy.String, ForeignKey(users.c.id), nullable=False),
-    sqlalchemy.Column("movie_id", sqlalchemy.String, ForeignKey(movie.c.id), nullable=False),
 
     sqlalchemy.Column("actor_name"  , sqlalchemy.String),
     sqlalchemy.Column("actor_birthday"  , sqlalchemy.String),
@@ -146,7 +145,6 @@ movie_director  = sqlalchemy.Table(
     metadata,
     sqlalchemy.Column("id"        , sqlalchemy.String , primary_key=True),
     sqlalchemy.Column("user_id", sqlalchemy.String, ForeignKey(users.c.id), nullable=False),
-    sqlalchemy.Column("movie_id", sqlalchemy.String, ForeignKey(movie.c.id), nullable=False),
 
     sqlalchemy.Column("director_name"  , sqlalchemy.String),
     sqlalchemy.Column("director_birthday"  , sqlalchemy.String),
@@ -159,7 +157,6 @@ movie_director  = sqlalchemy.Table(
     sqlalchemy.Column("created_at", sqlalchemy.String),
     sqlalchemy.Column("updated_at", sqlalchemy.String),
 )
-
 
 
 # 9 Table Movie streaming
@@ -222,7 +219,7 @@ movie_season_episode  = sqlalchemy.Table(
 
 # 12 Table Movie seasons episodes streaming
 movie_season_streaming_service  = sqlalchemy.Table(
-    "movie_streaming_service",
+    "movie_season_streaming_service",
     metadata,
     sqlalchemy.Column("id"        , sqlalchemy.String , primary_key=True),
     sqlalchemy.Column("user_id", sqlalchemy.String, ForeignKey(users.c.id), nullable=False),

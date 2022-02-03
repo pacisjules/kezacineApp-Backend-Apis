@@ -2,11 +2,19 @@ from pydantic import BaseModel, Field
 
 class UserCreate(BaseModel):
     username: str = Field(..., example="manzo12")
-    fullname: str = Field(..., example="Manzi Jacques")
-    #password: str = Field(..., example="***")
+
+
+    first_name: str = Field(..., example="MANZI")
+    last_name: str = Field(..., example="Jacques")
+    password: str = Field(..., example="***")
+
+
     email: str    = Field(..., example="manzii5@gmail.com")
     type: str    = Field(..., example="Normal")
     role:str = Field(..., example="Manager")
+
+
+
     company: str    = Field(..., example="Company")
     phone: str    = Field(..., example="phone")
     living: str    = Field(..., example="Kigali")
@@ -14,7 +22,8 @@ class UserCreate(BaseModel):
 class UserList(BaseModel):
     id: str
     username: str
-    fullname: str
+    first_name: str 
+    last_name: str 
     email: str
     type: str 
     role:str
@@ -30,7 +39,8 @@ class UserListforUpdate(BaseModel):
     id: str
     username: str
     password: str
-    fullname: str
+    first_name: str 
+    last_name: str 
     email: str
     type: str 
     role:str
